@@ -6,23 +6,23 @@ import os
 
 #our bangla digit(train) image is in png format...
 # means it is eligible to be rgba format. the a = alpha is to be removed before further processing
-def remove_transparency(im, bg_colour=(255, 255, 255)):
+def remove_transparency(image, bg_colour=(255, 255, 255)):
 
     # Only process if image has transparency (http://stackoverflow.com/a/1963146)
-    if im.mode in ('RGBA', 'LA') or (im.mode == 'P' and 'transparency' in im.info):
+    if image.mode in ('RGBA', 'LA') or (image.mode == 'P' and 'transparency' in image.info):
 
         # Need to convert to RGBA if LA format due to a bug in PIL (http://stackoverflow.com/a/1963146)
-        alpha = im.convert('RGBA').split()[-1]
+        alpha = image.convert('RGBA').split()[-1]
 
         # Create a new background image of our matt color.
         # Must be RGBA because paste requires both images have the same format
         # (http://stackoverflow.com/a/8720632  and  http://stackoverflow.com/a/9459208)
-        bg = Image.new("RGBA", im.size, bg_colour + (255,))
-        bg.paste(im, mask=alpha)
+        bg = Image.new("RGBA", image.size, bg_colour + (255,))
+        bg.paste(image, mask=alpha)
         return bg
 
     else:
-        return im
+        return image
 
 # returns like mnist dataset from keras
 def load_data():
